@@ -21,5 +21,21 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
     },
+    {
+      path: '/products',
+      name: 'products',
+      component: () => import('./components/product/ProductList.vue'),
+    },
+    {
+      path: '/products/add',
+      name: 'add-product',
+      component: () => import('./components/product/AddProduct.vue'),
+    },
+    {
+      path: '/products/edit/:id',
+      name: 'edit-product',
+      component: () => import('./components/product/EditProduct.vue'),
+      props: true,
+    },
   ],
 });
