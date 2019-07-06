@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <div v-if="this.showNotification" class="notification is-primary">{{$t('productUpdated.label')}}</div>
     <form v-if="this.currentProduct">
       <ProductView :currentProduct="this.currentProduct">
         <input class="button is-black" value="Send" type="submit" v-on:click.prevent="onSubmit">
@@ -28,6 +29,8 @@ export default class EditProduct extends Vue {
   // Union types allows the currentProduct to be a Product or a null and nothing else.
   // See https://mariusschulz.com/blog/typescript-2-0-non-nullable-types#modeling-nullability-with-union-types
   private currentProduct: Product | null = null;
+  // When set to True, shows the notification
+  private showNotification = false;
 
   // We still need the v-if because even though created() is called by Vue synchronously, the function called inside created()
   // is asynchronous and can be finished after mounted() and can cause rendering warnings.
@@ -45,6 +48,14 @@ export default class EditProduct extends Vue {
         this.id,
         this.currentProduct,
       );
+    // If successful show our notification
+    if (response.status == 200) {
+      this.showNotification = true;
+      // Hide notification after 3 seconds
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 3000);
+    }
     }
   }
 }
@@ -53,3 +64,18 @@ export default class EditProduct extends Vue {
 <style lang='sass' scoped>
 
 </style>
+
+<i18n>
+{
+  "de": {
+    "productUpdated": {
+      "label": "Produkt aktualisiert"
+    }
+  },
+  "en": {
+    "productUpdated": {
+      "label": "Product updated"
+    }
+  }
+}
+</i18n>
