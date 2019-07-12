@@ -78,7 +78,31 @@ class ProductImpl implements Product {
   }
 }
 
-// Factory method
+class CustomerImpl implements Customer {
+  // Initialize variable with default variables.
+  inserted_at: Date = new Date();
+  updated_at: Date = new Date();
+  pincode: string = '';
+  phone: string = '';
+  name: string = '';
+  id: number = 0;
+  details: object = {};
+
+  /* Mapped Types in Typescript.
+   * Partial<T> makes all fields of T as optional.
+   * This allows us to just update the values for passed in init(which itself is optional with?) and assigns to our object.
+   * Then we initialize like new CustomerImpl({name: "MyName"})
+   */
+  public constructor(customer?: Partial<Customer>) {
+    Object.assign(this, customer);
+  }
+}
+
+// Factory methods
 export function getEmptyProduct() {
   return new ProductImpl();
+}
+
+export function getEmptyCustomer() {
+  return new CustomerImpl();
 }
