@@ -27,11 +27,12 @@ export default class AddProduct extends Vue {
   private showNotification = false;
 
   public async onSubmit() {
-    const response = await products.service.createProduct(this.currentProduct);
+    const response = await products.service.create(this.currentProduct);
 
     // If status is 201, which stands for content created we show a notification
     if (response.status == 201) {
       this.showNotification = true;
+      console.log(response.data.data);
       // Hide notification after 3 seconds
       setTimeout(() => {
         this.showNotification = false;

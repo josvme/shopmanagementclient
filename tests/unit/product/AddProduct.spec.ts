@@ -10,8 +10,8 @@ jest.mock('@/store/modules/products', () => ({
   service: {
     // jest.fn creates mock function which replaces actually implementation of function.
     // It captures all calls to function with arguments and more.
-    createProduct: jest.fn(() => async (p: Product) => {
-      return {}
+    create: jest.fn(() => async (p: Product) => {
+      return {};
     }),
     getEmpty: () => {
       return {};
@@ -38,8 +38,8 @@ describe('AddProduct.vue', () => {
     // We need to cast to HTMLInputElement, because Typescript by default provides a generic HTMLElement,
     // which lacks some function from an input field.
     const t = inputV.element as HTMLInputElement;
-    // Check if the value we set before clicking submit is sent to createProduct function.
-    expect(products.service.createProduct).toBeCalledWith({ name: 'testNamer' });
+    // Check if the value we set before clicking submit is sent to create function.
+    expect(products.service.create).toBeCalledWith({ name: 'testNamer' });
   });
 
   test('Check if product created notification displayed when showNotification is true', async () => {
@@ -47,7 +47,7 @@ describe('AddProduct.vue', () => {
     const wrapper = mount(AddProduct, {
       mocks: {
         // Here we pass a mock for global function $t. $t is the translation function from vue-i18n
-        $t: () => { }
+        $t: () => { },
       },
     });
     // We set showNotification to true and wait for Vue to update DOM by waiting for vm.nextTick
@@ -56,6 +56,6 @@ describe('AddProduct.vue', () => {
     // Search for element with class=notification
     const t = wrapper.find('.notification');
     // Assert the element is visible.
-    expect(t.isVisible()).toBe(true)
-  })
+    expect(t.isVisible()).toBe(true);
+  });
 });

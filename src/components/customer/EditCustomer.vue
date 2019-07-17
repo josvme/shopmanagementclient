@@ -12,7 +12,6 @@
 <script lang='ts'>
 import Vue from 'vue';
 import { Customer } from '@/types/types.ts';
-import { CustomerService } from '@/services/customerService.ts';
 import CustomerView from '@/components/customer/CustomerView.vue';
 import { Component, Prop } from 'vue-property-decorator';
 import customers from '@/store/modules/customers';
@@ -36,20 +35,20 @@ export default class EditCustomer extends Vue {
   // is asynchronous and can be finished after mounted() and can cause rendering warnings.
   // https://stackoverflow.com/questions/49577394/which-vuejs-lifecycle-hook-must-asynchronous-http-requests-be-called-in
   public async created() {
-    const response = await customers.service.getCustomer(this.id);
-    this.currentCustomer = response.data.customer;
+    const response = await customers.service.get(this.id);
+    this.currentCustomer = response.data.data;
   }
 
   public async onSubmit() {
     // Typescript allows property access of nullable types based on conditions.
     // See https://mariusschulz.com/blog/typescript-2-0-non-nullable-types#property-access-with-nullable-types
     if (this.currentCustomer) {
-      const response = await customers.service.updateCustomer(
+      const response = await customers.service.update(
         this.id,
         this.currentCustomer,
       );
     // If successful show our notification
-    if (response.status == 200) {
+      if (response.status == 200) {
       this.showNotification = true;
       // Hide notification after 3 seconds
       setTimeout(() => {

@@ -12,7 +12,6 @@
 <script lang='ts'>
 import Vue from 'vue';
 import { Product } from '@/types/types.ts';
-import { ProductService } from '@/services/productService.ts';
 import ProductView from '@/components/product/ProductView.vue';
 import { Component, Prop } from 'vue-property-decorator';
 import products from '@/store/modules/products';
@@ -36,20 +35,20 @@ export default class EditProduct extends Vue {
   // is asynchronous and can be finished after mounted() and can cause rendering warnings.
   // https://stackoverflow.com/questions/49577394/which-vuejs-lifecycle-hook-must-asynchronous-http-requests-be-called-in
   public async created() {
-    const response = await products.service.getProduct(this.id);
-    this.currentProduct = response.data.product;
+    const response = await products.service.get(this.id);
+    this.currentProduct = response.data.data;
   }
 
   public async onSubmit() {
     // Typescript allows property access of nullable types based on conditions.
     // See https://mariusschulz.com/blog/typescript-2-0-non-nullable-types#property-access-with-nullable-types
     if (this.currentProduct) {
-      const response = await products.service.updateProduct(
+      const response = await products.service.update(
         this.id,
         this.currentProduct,
       );
     // If successful show our notification
-    if (response.status == 200) {
+      if (response.status == 200) {
       this.showNotification = true;
       // Hide notification after 3 seconds
       setTimeout(() => {

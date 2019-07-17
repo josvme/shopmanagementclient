@@ -23,14 +23,14 @@ class ProductModule extends VuexModule {
      * which can be shared between all components.
      */
     public allProducts: Product[] = [];
-    public service: ProductService = new ProductService('http://0.0.0.0:4000/api/v1/', 'products');
+    public service: ProductService = new ProductService('http://0.0.0.0:4000/api/v1/', 'products', 'product');
 
     // Action automatically calls setProducts function with arguments returned by fetchProducts function.
     @Action({ commit: 'setProducts' })
     public async fetchProducts() {
         // Calls into service to get all products
         const t = await this.service.getAllRequest();
-        return t.data.products;
+        return t.data.data;
     }
 
     // modifies our module state, by setting allProducts to p.

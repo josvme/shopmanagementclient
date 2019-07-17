@@ -80,13 +80,13 @@ class ProductImpl implements Product {
 
 class CustomerImpl implements Customer {
   // Initialize variable with default variables.
-  inserted_at: Date = new Date();
-  updated_at: Date = new Date();
-  pincode: string = '';
-  phone: string = '';
-  name: string = '';
-  id: number = 0;
-  details: object = {};
+  public inserted_at: Date = new Date();
+  public updated_at: Date = new Date();
+  public pincode: string = '';
+  public phone: string = '';
+  public name: string = '';
+  public id: number = 0;
+  public details: object = {};
 
   /* Mapped Types in Typescript.
    * Partial<T> makes all fields of T as optional.

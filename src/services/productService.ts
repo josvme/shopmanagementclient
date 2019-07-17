@@ -1,39 +1,14 @@
-import axios, { AxiosPromise } from 'axios';
 import { Product, getEmptyProduct } from '@/types/types';
+import { BaseService } from './baseService';
 
-export class ProductService {
+export class ProductService extends BaseService<Product> {
 
-  private endpoint: string;
-  private entity: string;
-
-  constructor(endpoint: string, entity: string) {
-    this.endpoint = endpoint;
-    this.entity = entity;
-  }
-
-  public getAllRequest(): AxiosPromise<{ 'products': Product[] }> {
-    const response = axios.get(`${this.endpoint}${this.entity}`);
-    return response;
-  }
-
-  public createProduct(data: Product): AxiosPromise<{ 'product': Product }> {
-    return axios.post(`${this.endpoint}${this.entity}`, { product: data });
-  }
-
-  public updateProduct(identifier: number, data: Product): AxiosPromise<{ 'product': Product }> {
-    return axios.put(`${this.endpoint}${this.entity}/${identifier}`, { product: data });
-  }
-
-  public getProduct(identifier: number): AxiosPromise<{ 'product': Product }> {
-    return axios.get(`${this.endpoint}${this.entity}/${identifier}`);
-  }
-
-  public deleteProduct(identifier: number): AxiosPromise<any> {
-    return axios.delete(`${this.endpoint}${this.entity}/${identifier}`);
+  // constructors should call parent class with super()
+  constructor(endpoint: string, entity: string, requestPrefix: string) {
+    super(endpoint, entity, requestPrefix);
   }
 
   public getEmpty(): Product {
     return getEmptyProduct();
   }
-
 }

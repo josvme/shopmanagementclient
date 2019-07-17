@@ -27,7 +27,7 @@ export default class AddCustomer extends Vue {
   private showNotification = false;
 
   public async onSubmit() {
-    const response = await customers.service.createCustomer(this.currentCustomer);
+    const response = await customers.service.create(this.currentCustomer);
 
     // If status is 201, which stands for content created we show a notification
     if (response.status == 201) {
