@@ -11,7 +11,7 @@ export interface Product {
 }
 export interface OrderItem {
   updated_at: Date;
-  unitPrice: number;
+  unit_price: number;
   product_id: number;
   order_id: number;
   inserted_at: Date;
@@ -25,7 +25,8 @@ export interface Order {
   id: number;
   details: object;
   customer_id: number;
-  creationDate: Date;
+  creation_date: Date;
+  order_items: OrderItem[];
 }
 export interface Brand {
   updated_at: Date;
@@ -98,6 +99,26 @@ class CustomerImpl implements Customer {
   }
 }
 
+class OrderImpl implements Order {
+  updated_at: Date = new Date();
+  message: string = '';
+  inserted_at: Date = new Date();
+  id: number = -1;
+  details: object = {};
+  customer_id: number = -1;
+  creation_date: Date = new Date();
+  order_items: OrderItem[] = [];
+
+  /* Mapped Types in Typescript.
+   * Partial<T> makes all fields of T as optional.
+   * This allows us to just update the values for passed in init(which itself is optional with?) and assigns to our object.
+   * Then we initialize like new CustomerImpl({name: "MyName"})
+   */
+  public constructor(order?: Partial<Order>) {
+    Object.assign(this, order);
+  }
+}
+
 // Factory methods
 export function getEmptyProduct() {
   return new ProductImpl();
@@ -105,4 +126,8 @@ export function getEmptyProduct() {
 
 export function getEmptyCustomer() {
   return new CustomerImpl();
+}
+
+export function getEmptyOrder() {
+  return new OrderImpl();
 }

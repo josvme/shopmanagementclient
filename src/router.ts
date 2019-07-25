@@ -53,5 +53,21 @@ export default new Router({
       component: () => import('./components/customer/EditCustomer.vue'),
       props: true,
     },
+    {
+      path: '/orders',
+      name: 'orders',
+      component: () => import('./components/order/OrderList.vue'),
+    },
+    {
+      path: '/orders/add',
+      name: 'add-order',
+      component: () => import('./components/order/AddOrder.vue'),
+    },
+    {
+      path: '/orders/edit/:id',
+      name: 'edit-order',
+      component: () => import('./components/order/EditOrder.vue'),
+      props: true,
+    },
   ],
 });
