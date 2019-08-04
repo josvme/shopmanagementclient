@@ -43,5 +43,10 @@ export abstract class BaseService<T> {
     return axios.delete(`${this.endpoint}${this.entity}/${identifier}`);
   }
 
+  public search(searchTerm: {'term': string}): AxiosPromise<{'data': T[]}> {
+    const response = axios.get(`${this.endpoint}${this.entity}/search?term=${searchTerm.term}`);
+    return response;
+  }
+
   public abstract getEmpty(): T;
 }

@@ -119,6 +119,20 @@ class OrderImpl implements Order {
   }
 }
 
+class OrderItemImpl implements OrderItem {
+  updated_at: Date = new Date();
+  unit_price: number = -1;
+  product_id: number = -1;
+  order_id: number = -1;
+  inserted_at: Date = new Date();
+  id: number = -1;
+  amount: number = 1;
+
+  public constructor(orderItem?: Partial<OrderItem>) {
+    Object.assign(this, orderItem);
+  }
+}
+
 // Factory methods
 export function getEmptyProduct() {
   return new ProductImpl();
@@ -130,4 +144,8 @@ export function getEmptyCustomer() {
 
 export function getEmptyOrder() {
   return new OrderImpl();
+}
+
+export function getEmptyOrderItem() {
+  return new OrderItemImpl();
 }
