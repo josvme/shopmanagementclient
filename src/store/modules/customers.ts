@@ -23,7 +23,7 @@ class CustomerModule extends VuexModule {
      * which can be shared between all components.
      */
     public allCustomers: Customer[] = [];
-    public service: CustomerService = new CustomerService('http://0.0.0.0:4000/api/v1/', 'customers', 'customer');
+    public service: CustomerService = new CustomerService('http://localhost/api/v1/', 'customers', 'customer');
 
     // Action automatically calls setCustomers function with arguments returned by fetchCustomers function.
     @Action({ commit: 'setCustomers' })

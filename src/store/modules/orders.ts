@@ -23,7 +23,7 @@ class OrderModule extends VuexModule {
      * which can be shared between all components.
      */
     public allOrders: Order[] = [];
-    public service: OrderService = new OrderService('http://0.0.0.0:4000/api/v1/', 'orders', 'order');
+    public service: OrderService = new OrderService('http://localhost/api/v1/', 'orders', 'order');
 
     // Action automatically calls setOrders function with arguments returned by fetchOrders function.
     @Action({ commit: 'setOrders' })
