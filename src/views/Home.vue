@@ -1,9 +1,12 @@
 <template>
   <div class="container">
-    <div class="tile is-ancestor"> <!-- The ancestor of all tiles -->
-      <div class="tile is-parent"> <!-- Parent of all child classes -->
-        <article class="tile is-child box"> <!-- child where we show our tile -->
-        <!-- We need atleast 3 levels of hiearchy. ie. is-ancestor -> is-parent -> is-child -->
+    <div class="tile is-ancestor">
+      <!-- The ancestor of all tiles -->
+      <div class="tile is-parent is-vertical">
+        <!-- Parent of all 2 child classes. Inside classes are aligned vertically -->
+        <article class="tile is-child box">
+          <!-- child where we show our tile -->
+          <!-- We need atleast 3 levels of hiearchy. ie. is-ancestor -> is-parent -> is-child -->
           <router-link to="/customers">
             <p class="title">Customers</p>
             <p class="subtitle">Customer Managment</p>
@@ -12,8 +15,6 @@
             </div>
           </router-link>
         </article>
-      </div>
-      <div class="tile is-parent">
         <article class="tile is-child box">
           <router-link to="/products">
             <p class="title">Products</p>
@@ -24,8 +25,8 @@
           </router-link>
         </article>
       </div>
-
-      <div class="tile is-parent">
+      <div class="tile is-parent is-vertical">
+        <!-- Parent of all 2 child classes. Inside classes are aligned vertically -->
         <article class="tile is-child box">
           <router-link to="/orders">
             <p class="title">Orders</p>
@@ -35,8 +36,6 @@
             </div>
           </router-link>
         </article>
-      </div>
-      <div class="tile is-parent">
         <article class="tile is-child box">
           <router-link to="/deliveries">
             <p class="title">Delivery</p>

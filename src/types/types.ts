@@ -100,14 +100,14 @@ class CustomerImpl implements Customer {
 }
 
 class OrderImpl implements Order {
-  updated_at: Date = new Date();
-  message: string = '';
-  inserted_at: Date = new Date();
-  id: number = -1;
-  details: object = {};
-  customer_id: number = -1;
-  creation_date: Date = new Date();
-  order_items: OrderItem[] = [];
+  public updated_at: Date = new Date();
+  public message: string = '';
+  public inserted_at: Date = new Date();
+  public id: number = -1;
+  public details: object = {};
+  public customer_id: number = -1;
+  public creation_date: Date = new Date();
+  public order_items: OrderItem[] = [];
 
   /* Mapped Types in Typescript.
    * Partial<T> makes all fields of T as optional.
@@ -120,13 +120,13 @@ class OrderImpl implements Order {
 }
 
 class OrderItemImpl implements OrderItem {
-  updated_at: Date = new Date();
-  unit_price: number = -1;
-  product_id: number = -1;
-  order_id: number = -1;
-  inserted_at: Date = new Date();
-  id: number = -1;
-  amount: number = 1;
+  public updated_at: Date = new Date();
+  public unit_price: number = -1;
+  public product_id: number = -1;
+  public order_id: number = -1;
+  public inserted_at: Date = new Date();
+  public id: number = -1;
+  public amount: number = 1;
 
   public constructor(orderItem?: Partial<OrderItem>) {
     Object.assign(this, orderItem);
@@ -149,3 +149,6 @@ export function getEmptyOrder() {
 export function getEmptyOrderItem() {
   return new OrderItemImpl();
 }
+
+// Type showing the content of a box in HomePage.vue
+export interface HomePageBoxContent {link: String; title: String; subTitle: String; }

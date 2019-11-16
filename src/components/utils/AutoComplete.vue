@@ -2,7 +2,7 @@
   <!--
     We want to avoid all default event propagations on the input form. So we use @click.stop
     @keyup event will be triggered when user has finished entering a character.
-    -->
+  -->
   <div @click.stop>
     <input
       type="text"
@@ -19,16 +19,26 @@
         <li> Option 1</li>
         <li> Option 2</li>
       </ul>
-      -->
+    -->
     <ul name="autocomplete" v-if="active">
       <li
-        :value="l.name"
-        v-for="l in autoCompleteSuggestions"
-        v-bind:key="l.id"
-        @click.prevent="selectionChanged(l)"
+        :value="item.name"
+        v-for="item in autoCompleteSuggestions"
+        v-bind:key="item.id"
+        @click.prevent="selectionChanged(item)"
         class="button is-fullwidth"
         style="border-radius: 0px"
-      >{{l.name}}</li>
+      >
+        <!--
+          Slot gets a name with name attribute. Here it is itemView. 
+          Then we bind :item to item from v-for loop so that we can use it
+          inside our slot.
+        -->
+        <slot name="itemView" :item="item">
+          <!-- Fallback content -->
+          {{ item.name }}
+        </slot>
+      </li>
     </ul>
   </div>
 </template>
@@ -40,35 +50,34 @@ import { Component, Prop } from 'vue-property-decorator';
 import { AxiosPromise } from 'axios';
 
 @Component({
-  components: {
-  },
+  components: {},
 })
-
 export default class AutoComplete<T extends { name: string }> extends Vue {
   /**
    * searchFn takes a string and return an AxiosPromise. With this function signature
    * we can easy pass currentInput and get possible autocompletions from backend easily.
    */
   @Prop()
-  public searchFn!: (s: string) => AxiosPromise<{ 'data': T[] }>;
+  public searchFn!: (s: string) => AxiosPromise<{ data: T[] }>;
 
   /**
    * This is our html placeholder, which writes something like enter a customer name/ product name
    */
   @Prop()
-  public displayText!: string
+  public displayText!: string;
 
-  /** 
-   * Our input variable which is bound to html input form. 
+  /**
+   * Our input variable which is bound to html input form.
    * As you can see, we use v-model from vue, which binds autoCompleteInput to html input.
-   * v-model provides 2-way data binding such that change in one will be automatically 
+   * v-model provides 2-way data binding such that change in one will be automatically
    * propagated to other.
-   */ 
+   */
+
   private autoCompleteInput: string = '';
 
   /**
    * Autocomplete suggestions list will only be shown when active is set to true.
-   * When the html input box is focused, we set it to true using the @focus event from browser. 
+   * When the html input box is focused, we set it to true using the @focus event from browser.
    * And when a value is chosen, we set it to false.
    */
   private active: boolean = false;
@@ -83,10 +92,10 @@ export default class AutoComplete<T extends { name: string }> extends Vue {
     /* Inside function(), we will have a new this, which points to the function itself.
      * So we store current this to vueThis and access vue instance using vueThis.
      */
-    let vueThis = this
-    document.addEventListener('click', function () {
-      vueThis.active = false
-    })
+    const vueThis = this;
+    document.addEventListener('click', function() {
+      vueThis.active = false;
+    });
     this.autoCompleteSuggestions = [];
   }
 
@@ -95,9 +104,11 @@ export default class AutoComplete<T extends { name: string }> extends Vue {
    * and updates the html list
    */
   public updateList(event: KeyboardEvent): void {
-    let request = this.searchFn(this.autoCompleteInput);
-    let vueThis = this;
-    request.then(result => vueThis.autoCompleteSuggestions = result.data.data)
+    const request = this.searchFn(this.autoCompleteInput);
+    const vueThis = this;
+    request.then(
+      (result) => (vueThis.autoCompleteSuggestions = result.data.data),
+    );
   }
 
   /**
@@ -105,10 +116,10 @@ export default class AutoComplete<T extends { name: string }> extends Vue {
    */
   public selectionChanged(l: T) {
     // user @Emit
-    this.$emit('OptionSelected', l)
+    this.$emit('OptionSelected', l);
     // To give visual feedback to user, we also set html input to chosen item.
-    this.autoCompleteInput = l.name
-    this.active = false
+    this.autoCompleteInput = l.name;
+    this.active = false;
   }
 }
 </script>

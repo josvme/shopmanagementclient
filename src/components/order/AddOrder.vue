@@ -48,7 +48,18 @@
         :displayText="$t('searchItem.label')"
         :searchFn="searchProducts"
         @OptionSelected="productChosen"
-      ></AutoComplete>
+      >
+      <!--
+        Here with v-slot:itemView, we say we need to fill the slot named itemView.
+        With "{item}", we use ES2015 destructing to get item value passed to 
+        slot. This is because, vue internally wraps contents of a scoped slot into  
+        a single argument function with slot props as the argument.
+        See https://vuejs.org/v2/guide/components-slots.html#Destructuring-Slot-Props
+      -->
+      <template v-slot:itemView="{item}">
+        {{item.name}}
+      </template>
+      </AutoComplete>
       <!--
         Shows the currently chosen product
       -->
@@ -74,19 +85,19 @@ import CustomerView from '@/components/customer/CustomerView.vue';
 import ProductView from '@/components/product/ProductView.vue';
 
 // You can't define types inside the class
-type OrderCreationStage = 'ChooseCustomer' | 'ChooseOrderItems' | 'OrderCreated'
+type OrderCreationStage = 'ChooseCustomer' | 'ChooseOrderItems' | 'OrderCreated';
 
 @Component({
   components: {
     OrderView,
     AutoComplete,
     CustomerView,
-    ProductView
+    ProductView,
   },
 })
 export default class AddOrder extends Vue {
   private currentOrder: Order = orders.service.getEmpty();
-  private state: OrderCreationStage = "ChooseCustomer"
+  private state: OrderCreationStage = 'ChooseCustomer';
   private currentCustomer: Customer = customers.service.getEmpty();
   private currentProduct: Product = products.service.getEmpty();
   private showNotification = false;
@@ -97,7 +108,7 @@ export default class AddOrder extends Vue {
    */
   public resetAddOrder() {
     this.currentOrder = orders.service.getEmpty();
-    this.state = "ChooseCustomer";
+    this.state = 'ChooseCustomer';
     this.currentCustomer = customers.service.getEmpty();
     this.currentProduct = products.service.getEmpty();
   }
@@ -106,14 +117,14 @@ export default class AddOrder extends Vue {
    * Contacts backend using customers service and get autocompletion suggestions
    */
   public searchCustomers(name: string) {
-    return customers.service.search({ 'term': name });
+    return customers.service.search({ term: name });
   }
 
   /**
    * Contacts backend using products service and get autocompletion suggestions
    */
   public searchProducts(name: string) {
-    return products.service.search({ 'term': name });
+    return products.service.search({ term: name });
   }
 
   public amountIncremented(item: OrderItem) {
@@ -123,9 +134,9 @@ export default class AddOrder extends Vue {
   public amountDecremented(item: OrderItem) {
     item.amount = item.amount - 1;
   }
-  
+
   public orderItemRemoved(item: OrderItem) {
-    this.currentOrder.order_items = this.currentOrder.order_items.filter(x => x.product_id !== item.product_id);
+    this.currentOrder.order_items = this.currentOrder.order_items.filter((x) => x.product_id !== item.product_id);
   }
 
   /**
@@ -135,20 +146,20 @@ export default class AddOrder extends Vue {
    */
   public moveToChooseOrderItems() {
     if (this.currentCustomer.id === 0) {
-      let response = customers.service.create(this.currentCustomer);
-      let vueThis = this;
+      const response = customers.service.create(this.currentCustomer);
+      const vueThis = this;
       response.then((v) => {
         vueThis.currentCustomer = v.data.data;
-      })
+      });
     }
-    this.state = "ChooseOrderItems";
+    this.state = 'ChooseOrderItems';
   }
 
   /**
    * Checks if all required customer details are provided
    */
   public customerDetailsComplete(customer: Customer) {
-    return customer.phone !== "" && customer.pincode !== "" && customer.name !== ""
+    return customer.phone !== '' && customer.pincode !== '' && customer.name !== '';
   }
 
   public async onSubmit() {
@@ -163,7 +174,7 @@ export default class AddOrder extends Vue {
       // Hide notification after 3 seconds
       setTimeout(() => {
         this.showNotification = false;
-      }, 3000)
+      }, 3000);
     }
   }
 
@@ -178,12 +189,12 @@ export default class AddOrder extends Vue {
    */
   public productChosen(item: Product) {
     // We need to convert the Product to an OrderItem to add into order_items
-    let orderItem = getEmptyOrderItem();
+    const orderItem = getEmptyOrderItem();
     orderItem.product_id = item.id;
     orderItem.amount = 1;
 
     // Checks if orderItem already exists with the order, if exists, we skip it again and return.
-    let orderItemExists = this.currentOrder.order_items.filter((x) => x.product_id === item.id);
+    const orderItemExists = this.currentOrder.order_items.filter((x) => x.product_id === item.id);
     if (orderItemExists.length !== 0) {
       return false;
     }

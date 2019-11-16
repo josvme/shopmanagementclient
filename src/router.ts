@@ -23,7 +23,12 @@ export default new Router({
     },
     {
       path: '/products',
-      name: 'products',
+      name: 'home-products',
+      component: () => import('./components/product/ProductHome.vue'),
+    },
+    {
+      path: '/products/all',
+      name: 'all-products',
       component: () => import('./components/product/ProductList.vue'),
     },
     {
@@ -38,8 +43,23 @@ export default new Router({
       props: true,
     },
     {
+      path: '/products/search',
+      name: 'search-products',
+      component: () => import('./components/product/ProductSearch.vue'),
+    },
+    {
       path: '/customers',
-      name: 'customers',
+      name: 'home-customers',
+      component: () => import('./components/customer/CustomerHome.vue'),
+    },
+    {
+      path: '/customers/search',
+      name: 'search-customers',
+      component: () => import('./components/customer/CustomerSearch.vue'),
+    },
+    {
+      path: '/customers/all',
+      name: 'all-customers',
       component: () => import('./components/customer/CustomerList.vue'),
     },
     {
@@ -55,7 +75,12 @@ export default new Router({
     },
     {
       path: '/orders',
-      name: 'orders',
+      name: 'home-orders',
+      component: () => import('./components/order/OrderHome.vue'),
+    },
+    {
+      path: '/orders/all',
+      name: 'all-orders',
       component: () => import('./components/order/OrderList.vue'),
     },
     {
